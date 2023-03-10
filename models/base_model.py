@@ -9,17 +9,25 @@ class BaseModel:
     """Defines common attributes and methods for other classes"""
     def __init__(self, *args, **kwargs):
         """Initializes instance attributes
-        
+
         Args:
             *args: list of arguments
             **kwargs: dict of key/values arguments
         """
-        self.id = str(uuid4())
-        self.created_at = self.updated_at = datetime.now()
+
+        if kwargs:
+            for key, value in kwargs.items():
+                if key != '__class__':
+                    setattr(self, key, value)
+            self.created_at = datetime.strptime(kwargs['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
+            self.updated_at = datetime.strptime(kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f')
+        else:
+            self.id = str(uuid4())
+            self.created_at = self.updated_at = datetime.now()
 
     def __str__(self):
         """Returning string representation of BaseModel."""
-        return(f"[{type(self).__name__}] ({self.id}) {self.__dict__}")
+        return (f"[{type(self).__name__}] ({self.id}) {self.__dict__}")
 
     def save(self):
         """Updates the instance attr "updated_at" with the current datetime"""
