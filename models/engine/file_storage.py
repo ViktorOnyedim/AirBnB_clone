@@ -11,8 +11,8 @@ class FileStorage:
     __objects = {}
 
     def all(self):
-        """Returns the dictionary objects"""
-        return self.__objects
+        """Returns the dictionary __objects"""
+        return FileStorage.__objects
 
     def new(self, obj):
         """
@@ -21,17 +21,13 @@ class FileStorage:
         Args:
             obj: An object to be added to the dictionary
         """
-        #for key in obj.keys():
-        #if 
         key = f"{type(obj).__name__}.{obj.id}"
-        self.__object[key] = obj
+        FileStorage.__objects[key] = obj
 
     def save(self):
         """Serializes __objects to the JSON file (path: __file_path)"""
-        with open(self.__file_path, mode="w") as f:
-            obj_dict = {}
-            for key, value in self.__objects.items():
-                self.__objects[key] = value.to_dict()
+        with open(FileStorage.__file_path, mode="w", encoding="utf-8") as f:
+            obj_dict = {key: value.to_dict() for key, value in FileStorage.__objects.items()}
             json.dump(obj_dict, f)
 
     def reload(self):
@@ -41,12 +37,12 @@ class FileStorage:
         otherwise, do nothing...no exception should be raised
         """
         try:
-            with open(self.__file_path, mode="r") as f:
+            with open(FileStorage.__file_path, mode="r", encoding="utf-8") as f:
                 obj_dict = json.load(f)
-                for key, value in obj_dict.items():
-                    cls_name, obj_id = key.split(".")
-                    cls = globals()[cls_name]
-                    obj = cls(**value)
-                    self.__objects[key] = obj
-        except: FileNotFoundError:
+                obj_dict = {key: self.classes()[v["__class__"]](**value) for key, value in obj_dict.items()}
+                """cls_name, obj_id = key.split(".")
+                cls = globals()[cls_name]
+                obj = cls(**value)"""
+                FileStorage.__objects[key] = obj
+        except FileNotFoundError:
             pass
