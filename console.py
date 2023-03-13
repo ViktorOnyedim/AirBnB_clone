@@ -4,6 +4,7 @@ import cmd
 import json
 from models.engine.file_storage import FileStorage
 from models import storage
+from models.base_model import BaseModel
 import models
 
 
@@ -35,14 +36,12 @@ class HBNBCommand(cmd.Cmd):
         """Create a new instance of a BaseModel subclass."""
         if not arg:
             print("** class name missing **")
+        elif arg not in storage.classes():
+            print("** class doesn't exist **")
         else:
-            try:
-                cls = models.getattr(models, arg)
-                obj = cls()
-                obj.save()
-                print(obj.id)
-            except AttributeError:
-                print("** class doesn't exist **")
+            obj = storage.classes()[arg]()
+            obj.save()
+            print(obj.id)
 
     def help_create(self):
         """Help message for the create command"""
@@ -65,7 +64,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** instance id missing **")
                 return
             obj_dict = models.storage.all()
-            obj_id = f"{class_name}.{args[1]}"
+            obj_id = f"{cls_name}.{args[1]}"
             if obj_id not in obj_dict:
                 print("** no instance found **")
                 return
@@ -103,6 +102,32 @@ class HBNBCommand(cmd.Cmd):
                 return
             obj_dict.pop(key)
             models.storage.save()
+
+    def help_destroy(self):
+        """Help message for the destroy command"""
+        print("Deletes an instance based on the class name and id")
+        print("Saves it (to the JSON file) and prints the id")
+        print("Usage: destroy <class_name> <id>")
+
+
+    def do_all(self, arg):
+        """Prints all string representation of all instances
+        based or not on the class name."""
+        obj_list = []
+        if not arg:
+            obj_dict = models.storage.all()
+            for obj in obj_dict.values():
+                obj_list.append(str(obj))
+        else:
+            cls_name = arg.split()[0]
+            if cls_name not in storage.classes():
+                print("** class doesn't exist **")
+                return
+            obj_dict = models.storage.all()
+            for key, obj in obj_dict.items():
+                if obj.__class__.__name__ == cls_name:
+                    obj_list.append(str(obj))
+        print(obj_list)
 
 
 if __name__ == '__main__':
