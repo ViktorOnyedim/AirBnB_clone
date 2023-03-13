@@ -3,13 +3,14 @@
 import cmd
 import json
 from models.engine.file_storage import FileStorage
+from models import storage
 import models
 
 
 class HBNBCommand(cmd.Cmd):
     """Command Interpreter for HBNB project"""
     prompt = '(hbnb) '
-    
+
     def do_quit(self, arg):
         """Quit command to exit the program"""
         return True
@@ -48,10 +49,35 @@ class HBNBCommand(cmd.Cmd):
         print("Create a new instance of BaseModel")
         print("Usage: create <class_name>")
 
-    def show(self, arg):
-        """S"""
-        if not arg:
+    def do_show(self, arg):
+        """Prints the string representation of an instance"""
+        args = arg.split()
+
+        if not args:
             print("** class name missing **")
+            return
+        else:
+            cls_name = args[0]
+            if cls_name not in storage.classes():
+                print("** class doesn't exist **")
+                return
+            if len(args) < 2:
+                print("** instance id missing **")
+                return
+            objects = models.storage.all()
+            obj_id = f"{class_name}.{args[1]}"
+            if obj_id not in objects:
+                print("** no instance found **")
+                return
+            else:
+                obj = objects[obj_id]
+                print(obj)
+
+    def help_show(self):
+        """Help message for the show command"""
+        print("Prints the string representation of an instance")
+        print("Usage: show <class_name> <id>")
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
