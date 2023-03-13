@@ -64,13 +64,13 @@ class HBNBCommand(cmd.Cmd):
             if len(args) < 2:
                 print("** instance id missing **")
                 return
-            objects = models.storage.all()
+            obj_dict = models.storage.all()
             obj_id = f"{class_name}.{args[1]}"
-            if obj_id not in objects:
+            if obj_id not in obj_dict:
                 print("** no instance found **")
                 return
             else:
-                obj = objects[obj_id]
+                obj = obj_dict[obj_id]
                 print(obj)
 
     def help_show(self):
@@ -78,6 +78,31 @@ class HBNBCommand(cmd.Cmd):
         print("Prints the string representation of an instance")
         print("Usage: show <class_name> <id>")
 
+    def do_destroy(self, arg):
+        """
+        Deletes an instance based on the class name and id
+        (save the changes into the JSON file)
+        """
+        args = arg.split()
+        if not args:
+            print("** class name missing **")
+            return
+        else:
+            cls_name = args[0]
+            if cls_name not in storage.classes():
+                print("** class doesn't exist **")
+                return
+            elif len(args) < 2:
+                print("** instance id missing **")
+                return
+            obj_id = args[1]
+            key = f"{cls_name}.{obj_id}"
+            obj_dict = models.storage.all()
+            if key not in obj_dict:
+                print("** no instance found **")
+                return
+            obj_dict.pop(key)
+            models.storage.save()
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
