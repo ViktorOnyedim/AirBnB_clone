@@ -129,6 +129,55 @@ class HBNBCommand(cmd.Cmd):
                     obj_list.append(str(obj))
         print(obj_list)
 
+        def do_update(self, arg):
+            """
+            Updates an instance based on the class name and id by adding or
+            updating attribute (save the change into the JSON file)
+            """
+            args = arg.split()
+            if not arg:
+                print("** class name missing **")
+                return
+            else:
+                cls_name = args[0]
+                if cls_name not in storage.classes():
+                    print("** class doesn't exist **")
+                    return
+                elif len(args) < 2:
+                    print("** instance id missing **")
+                    return
+                obj_dict = storage.all()
+                obj_id = args[1]
+                key = f"{cls_name}.{obj_id}"
+                if key not in obj_dict:
+                    print("** no instance found **")
+                    return
+                obj = obj_dict[obj_id]
+                if len(args) < 3:
+                    print("** attribute name missing **")
+                    return
+                elif len(args) < 4:
+                    print("** value missing **")
+                    return
+                else:
+                    attr_name = args[2]
+                    attr_value = args[3]
+                    try:
+                        attr_value = int(attr_value)
+                    except ValueError:
+                        try: 
+                            attr_value = float(attr_value)
+                        except ValueError:
+                            pass
+                    setattr(obj, attr_name, attr_value)
+                    obj.save()
+
+        def help_update(self):
+            """Help message for the update command"""
+            print("Updates an instance based on the class name and id")
+            print("by adding or updating attribute")
+            print("Usage: update <class name> <id> <attribute name> \"<attribute value>\"")
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
