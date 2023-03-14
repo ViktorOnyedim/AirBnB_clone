@@ -109,7 +109,6 @@ class HBNBCommand(cmd.Cmd):
         print("Saves it (to the JSON file) and prints the id")
         print("Usage: destroy <class_name> <id>")
 
-
     def do_all(self, arg):
         """Prints all string representation of all instances
         based or not on the class name."""
@@ -165,7 +164,7 @@ class HBNBCommand(cmd.Cmd):
                     try:
                         attr_value = int(attr_value)
                     except ValueError:
-                        try: 
+                        try:
                             attr_value = float(attr_value)
                         except ValueError:
                             pass
@@ -176,7 +175,9 @@ class HBNBCommand(cmd.Cmd):
             """Help message for the update command"""
             print("Updates an instance based on the class name and id")
             print("by adding or updating attribute")
-            print("Usage: update <class name> <id> <attribute name> \"<attribute value>\"")
+            print("Usage: ", end="")
+            print("update <class name> <id> <attribute name> ", end="")
+            print("\"<attribute value>\"")
 
 
 if __name__ == '__main__':
