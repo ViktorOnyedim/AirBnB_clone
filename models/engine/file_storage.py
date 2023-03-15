@@ -52,9 +52,11 @@ class FileStorage:
     @classmethod
     def classes(cls):
         from models.base_model import BaseModel
+        from models.user import User
         # import other models here"""
 
         return {
             "BaseModel": BaseModel,
+            "User": User,
             # add other models here
         }
