@@ -7,7 +7,7 @@ class Place(BaseModel):
     """Place class that inherits from BaseModel"""
     city_id: str = ""
     user_id: str = ""
-    name: str = "" 
+    name: str = ""
     description: str = ""
     number_rooms: int = 0
     number_bathrooms: int = 0
