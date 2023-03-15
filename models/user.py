@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""User Class"""
+"""This module creates a User Class"""
 from models.base_model import BaseModel
 
 
@@ -13,7 +13,7 @@ class User(BaseModel):
     - first_name: string - empty string
     - last_name: string - empty string
     """
-    email: str = ""
-    password: str = ""
-    first_name: str = ""
-    last_name: str = ""
+    email = ""
+    password = ""
+    first_name = ""
+    last_name = ""
