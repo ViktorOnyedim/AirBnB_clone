@@ -18,7 +18,6 @@
     flex-direction: column;
     justify-content: center;
     padding-left: 40px;
-    border: 1px solid red;
 }
 
 .container .filters div:first-of-type {
