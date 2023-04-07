@@ -67,6 +67,6 @@ class FileStorage:
             "City": City,
             "Amenity": Amenity,
             "Place": Place,
-            "Review": import Review,
+            "Review": Review,
             # add other models here
         }
