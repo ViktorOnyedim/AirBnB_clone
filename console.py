@@ -17,7 +17,7 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_EOF(self, arg):
-        """EOF comman to exit the program"""
+        """EOF command to exit the program"""
         return True
 
     def emptyline(self):
@@ -178,6 +178,9 @@ class HBNBCommand(cmd.Cmd):
         print("Usage: ", end="")
         print("update <class name> <id> <attribute name> ", end="")
         print("\"<attribute value>\"")
+
+    def do_count(self):
+        
 
 
 if __name__ == '__main__':
