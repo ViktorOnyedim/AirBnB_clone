@@ -151,7 +151,7 @@ class HBNBCommand(cmd.Cmd):
             if key not in obj_dict:
                 print("** no instance found **")
                 return
-            obj = obj_dict[obj_id]
+            obj = obj_dict[key]
             if len(args) < 3:
                 print("** attribute name missing **")
                 return
@@ -179,7 +179,7 @@ class HBNBCommand(cmd.Cmd):
         print("update <class name> <id> <attribute name> ", end="")
         print("\"<attribute value>\"")
 
-    def do_count(self):
+    #def do_count(self):
         
 
 
